@@ -20,22 +20,22 @@ export default function Navbar({ budget, setBudget, spentSoFar }) {
                             type='number'
                             name="budget"
                             min='1'
-                            value={budget.budget}
+                            value={budget.budget == 0 ? '' : budget.budget}
                             onChange={(e) => setBudget({
                                 [e.target.name]: Number(e.target.value)
                             })} />
-                        <button>SAVE</button>
+                        <button className="button">SAVE</button>
                     </form> :
                     <div>
                         <p>Budget: ${Number(budget.budget)}</p>
-                        <button onClick={() => setIsWritingBudget(true)}>Edit</button>
+                        <button className="button" onClick={() => setIsWritingBudget(true)}>Edit</button>
                     </div>
 
                 }
             </div>
+            <div className="remaining"><p>Remaining: ${budget.budget - spentSoFar}</p></div>
+            <div className="spent"><p>Spent so far: ${spentSoFar}</p></div>
         </div>
-        <div className="remaining"><p>Remaining: ${budget.budget - spentSoFar}</p></div>
-        <div className="spent"><p>Spent so far: ${spentSoFar}</p></div>
     </header>
 
 }

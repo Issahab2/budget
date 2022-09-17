@@ -3,8 +3,7 @@ import React, { useState } from "react";
 export default function AddExpense({ expenses, setExpenses }) {
 
     const [newExpense, setNewExpense] = useState({ name: '', cost: 0 })
-    const [isNotValidForm, setIsNotValidForm] = useState(false)
-
+    const [isNotValidForm, setIsNotValidForm] = useState({ state: false, text: '' })
 
 
     function handleChange(e) {
@@ -16,27 +15,29 @@ export default function AddExpense({ expenses, setExpenses }) {
     function handleSubmit(e) {
         e.preventDefault()
         if (newExpense.name.length < 1 || newExpense.cost < 1) {
-            setIsNotValidForm(true)
+            setIsNotValidForm({ state: true, text: 'Name should be at least 1 character length, or Cost should be at least $1' })
             return
         }
         if (expenses.some(obj => obj.name === newExpense.name)) {
-            setIsNotValidForm(true)
+            setIsNotValidForm({ state: true, text: 'No duplicates!' })
             return
         }
         setIsNotValidForm(false)
         setExpenses(prev => [...prev, newExpense])
+        setNewExpense({ name: '', cost: 0 })
     }
 
 
-    return <form onSubmit={handleSubmit}>
+    return <form className="add-expense" onSubmit={handleSubmit}>
         <h2>add expense</h2>
         <div>
             <label htmlFor="name">
-                <h2>Name</h2>
+                <h3>Name</h3>
                 <input
                     id="name"
                     type='text'
                     name="name"
+                    className="name"
                     value={newExpense.name}
                     onChange={handleChange}
                     required='required'
@@ -48,14 +49,15 @@ export default function AddExpense({ expenses, setExpenses }) {
                     id="cost"
                     type='number'
                     name="cost"
-                    value={newExpense.cost}
+                    className="cost"
+                    value={newExpense.cost == 0 ? '' : newExpense.cost}
                     onChange={handleChange}
                     min='1'
                     required='required'
                 />
             </label>
         </div>
-        <button>Save</button>
-        {isNotValidForm && <span>Name should be at least 1 character length, or Cost should be at least $1</span>}
+        <button className="button">Save</button>
+        {isNotValidForm.state && <span>{isNotValidForm.text}</span>}
     </form>
 }
