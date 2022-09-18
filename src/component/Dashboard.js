@@ -1,4 +1,3 @@
-/* eslint-disable eqeqeq */
 import React, { useEffect, useState } from "react";
 import AddExpense from "./AddExpense";
 import Expenses from "./Expenses";
@@ -12,6 +11,10 @@ export default function Dashboard() {
   const isBudgetZero = budget.budget === 0 && true;
   const [isWritingBudget, setIsWritingBudget] = useState(isBudgetZero);
 
+  function handleChange(e) {
+    setBudget({ [e.target.name]: e.target.value });
+  }
+
   function handleSubmit(e) {
     e.preventDefault();
     setIsWritingBudget(false);
@@ -22,32 +25,31 @@ export default function Dashboard() {
     localStorage.setItem("expenses", JSON.stringify(expenses));
   }, [budget, expenses]);
 
+  const budgetValue = isBudgetZero ? "" : budget.budget;
+
   return (
     <main>
-      {/* // todo: convert here to if else  */}
       {isWritingBudget ? (
         <div>
           <form className="set-up-budget" onSubmit={handleSubmit}>
             <h1>Set up Budget!</h1>
-            <input
-              type="number"
-              name="budget"
-              min="1"
-              value={budget.budget == 0 ? "" : budget.budget}
-              onChange={(e) =>
-                setBudget({
-                  [e.target.name]: e.target.value,
-                })
-              }
-            />
+            <input type="number" name="budget" min="1" value={budgetValue} onChange={handleChange} />
             <button className="button">SAVE</button>
           </form>
         </div>
       ) : (
         <>
-          <Navbar budget={budget} setBudget={setBudget} spentSoFar={spentSoFar} />
-          <Expenses expenses={expenses} setExpenses={setExpenses} setSpentSoFar={setSpentSoFar} />
+          <Navbar
+            budget={budget}
+            budgetValue={budgetValue}
+            setBudget={setBudget}
+            spentSoFar={spentSoFar}
+            isBudgetZero={isBudgetZero}
+            isWritingBudget={isWritingBudget}
+            setIsWritingBudget={setIsWritingBudget}
+          />
           <AddExpense expenses={expenses} setExpenses={setExpenses} />
+          <Expenses expenses={expenses} setExpenses={setExpenses} setSpentSoFar={setSpentSoFar} />
         </>
       )}
     </main>

@@ -1,1 +1,3 @@
 * refactor this
+* use other storage thing
+* edit styling margin etc.

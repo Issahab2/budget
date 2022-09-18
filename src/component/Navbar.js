@@ -1,41 +1,33 @@
-import React, { useState } from "react";
+import React from "react";
 
-export default function Navbar({ budget, setBudget, spentSoFar }) {
-    const isBudgetZero = budget.budget === 0 && true
-    const [isWritingBudget, setIsWritingBudget] = useState(isBudgetZero)
+export default function Navbar({ budget, spentSoFar, setIsWritingBudget }) {
+  const { budget: budgetValue } = budget;
 
+  const handleClick = () => {
+    setIsWritingBudget(true);
+  };
 
-    function handleSubmit(e) {
-        e.preventDefault()
-        setIsWritingBudget(false)
-    }
-
-    return <header>
-        <h1>my budget planner</h1>
-        <div className="dashboard">
-            <div className="budget">
-                {isWritingBudget ?
-                    <form onSubmit={handleSubmit}>
-                        <input
-                            type='number'
-                            name="budget"
-                            min='1'
-                            value={budget.budget == 0 ? '' : budget.budget}
-                            onChange={(e) => setBudget({
-                                [e.target.name]: Number(e.target.value)
-                            })} />
-                        <button className="button">SAVE</button>
-                    </form> :
-                    <div>
-                        <p>Budget: ${Number(budget.budget)}</p>
-                        <button className="button" onClick={() => setIsWritingBudget(true)}>Edit</button>
-                    </div>
-
-                }
-            </div>
-            <div className="remaining"><p>Remaining: ${budget.budget - spentSoFar}</p></div>
-            <div className="spent"><p>Spent so far: ${spentSoFar}</p></div>
+  return (
+    <header>
+      <h1>my budget planner</h1>
+      <div className="dashboard">
+        <div className="budget">
+          <div>
+            <p>Budget: $ {Number(budgetValue)}</p>
+            <button className="button" onClick={handleClick}>
+              Edit
+            </button>
+          </div>
         </div>
-    </header>
 
+        <div className="spent">
+          <p>Spent so far: $ {spentSoFar}</p>
+        </div>
+
+        <div className="remaining">
+          <p>Remaining: $ {budgetValue - spentSoFar}</p>
+        </div>
+      </div>
+    </header>
+  );
 }
