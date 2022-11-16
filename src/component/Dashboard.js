@@ -49,7 +49,8 @@ export default function Dashboard() {
                     <Navbar
                         budget={budget}
                         setBudget={setBudget}
-                        spentSoFar={spentSoFar} />
+                        spentSoFar={spentSoFar}
+                    />
                     <Expenses
                         expenses={expenses}
                         setExpenses={setExpenses}
